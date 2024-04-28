@@ -82,7 +82,7 @@ export class AppService {
       toCurrency,
     );
     const convertedAmount = amount * fxRate;
-    return { convertedAmount, currency: toCurrency };
+    return { convertedAmount: convertedAmount, currency: toCurrency };
   }
 
   async fetchFXRateUsingQuoteId(

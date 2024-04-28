@@ -53,10 +53,11 @@ export class AppService {
   // Method to get FX conversion rate
   async getFXRate(currencyPair: string): Promise<RateResponse> {
     const id = uuidv4();
-    this.fxRates['USD-EUR'].quoteId = id;
 
     const storedRate = this.fxRates[currencyPair];
     if (!storedRate) await this.fetchFXRates();
+
+    this.fxRates['USD-EUR'].quoteId = id;
 
     if (!this.utilityService.isRateValid(storedRate?.lastRefreshed)) {
       await this.fetchFXRates();
@@ -92,6 +93,8 @@ export class AppService {
   ): Promise<number> {
     const currencyPair = `${fromCurrency}-${toCurrency}`;
     const fxRateData = this.fxRates[currencyPair];
+
+    if (!fxRateData) await this.fetchFXRates();
 
     if (fxRateData?.quoteId !== quoteId) {
       throw new Error('Not Found');

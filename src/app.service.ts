@@ -29,7 +29,6 @@ export class AppService {
       });
 
       const { data } = response;
-      console.log('data:', data);
       const exchangeRate =
         data['Realtime Currency Exchange Rate']?.['5. Exchange Rate'];
       const lastRefreshed = new Date(
@@ -45,7 +44,6 @@ export class AppService {
         rate: exchangeRate,
         lastRefreshed,
       };
-      console.log('fxrate in servise:', this.fxRates);
     } catch (error) {
       console.error('Error fetching FX rates:', error);
       throw error;
@@ -60,15 +58,7 @@ export class AppService {
     const storedRate = this.fxRates[currencyPair];
     if (!storedRate) await this.fetchFXRates();
 
-    const currentTime = new Date();
-
-    const currTime = currentTime.getTime() / 1000;
-    const lastRefreshedTime = storedRate?.lastRefreshed.getTime() / 1000;
-
-    const rateAge = currTime - lastRefreshedTime;
-    console.log('range:', rateAge);
     if (!this.utilityService.isRateValid(storedRate?.lastRefreshed)) {
-      console.log('I have exceeded date range');
       await this.fetchFXRates();
     }
 

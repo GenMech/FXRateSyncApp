@@ -12,7 +12,7 @@ export type RateResponse = {
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get() // Route to fetch FX rates and store in memory
   async fetchFXRates(): Promise<string> {
     try {
       await this.appService.fetchFXRates();
@@ -23,7 +23,7 @@ export class AppController {
     }
   }
 
-  @Get('/fx-rates')
+  @Get('/fx-rates') // Route to get FX rates
   async getFxRates(): Promise<any> {
     const rates: RateResponse = await this.appService.getFXRate('USD-EUR');
 
@@ -33,7 +33,7 @@ export class AppController {
     return { quoteId: rates.quoteId, expiry_at: formattedExpiryDate };
   }
 
-  @Post('/fx-conversion')
+  @Post('/fx-conversion') // Route to convert currency by using stored FX conversion rate
   async convertFX(@Body() fxConversionDto: FXConversionDto): Promise<any> {
     const { quoteId, fromCurrency, toCurrency, amount } = fxConversionDto;
     const result = await this.appService.convertFX(

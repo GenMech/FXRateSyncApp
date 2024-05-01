@@ -5,7 +5,7 @@ import { AccountsService } from './accounts.service';
 export class AccountsController {
   constructor(private readonly accountService: AccountsService) {}
 
-  @Post('/topup')
+  @Post('/topup') // Route to top up user account
   async topUpAccount(
     @Body() requestBody: { currency: string; amount: number },
   ): Promise<string> {
@@ -14,7 +14,7 @@ export class AccountsController {
     return result;
   }
 
-  @Get('/balance')
+  @Get('/balance') // Route to check balance
   async accountBalance(): Promise<{ balances: Record<string, number> }> {
     const result = await this.accountService.getAccountBalance();
     return result;
